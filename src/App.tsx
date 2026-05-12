@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { motion } from 'motion/react';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   AudioLines, 
   TrendingUp, 
@@ -32,20 +32,6 @@ function NavBar() {
     <nav className="fixed top-0 inset-x-0 z-50 bg-bg-base/80 backdrop-blur-md border-b border-line-base pt-4 pb-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <motion.div
-            animate={{
-              rotateY: [0, 360],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{ transformStyle: 'preserve-3d' }}
-            className="w-12 h-12 flex items-center justify-center relative perspective-[1000px]"
-          >
-            <img src="/logo.jpg" alt="UP Music Logo" className="w-full h-full object-contain drop-shadow-2xl" />
-          </motion.div>
           <span className="font-bold text-xl tracking-[-1px] text-white hidden sm:block">
             <span className="metallic-silver-text">UP</span><span className="metallic-gold-text">MUSIC</span>
           </span>
@@ -56,7 +42,13 @@ function NavBar() {
           <a href="#planos" className="hover:text-white transition-colors">Planos</a>
           <a href="#diferenciais" className="hover:text-white transition-colors">Diferenciais</a>
         </div>
-        <button className="px-6 py-3 rounded-full border-none bg-metallic-gold text-black text-[0.75rem] font-semibold uppercase tracking-[1px] hover:opacity-90 transition-opacity hidden md:block">
+        <button 
+          onClick={() => {
+            const message = "Gostaria de um plano personalizado";
+            window.open(`https://wa.me/5537991614113?text=${encodeURIComponent(message)}`, '_blank');
+          }}
+          className="px-6 py-3 rounded-full border-none bg-metallic-gold text-black text-[0.75rem] font-semibold uppercase tracking-[1px] hover:opacity-90 transition-opacity hidden md:block"
+        >
           Falar com equipe
         </button>
       </div>
@@ -150,7 +142,22 @@ function Hero() {
   );
 }
 
+const ABOUT_VIDEOS = [
+  "https://www.youtube.com/watch?v=FpkX2VdXZJs", // Show
+  "https://www.youtube.com/watch?v=Z8fZWcOXmgs", // Estúdio / Gravando
+  "https://www.youtube.com/watch?v=7uPzZjxHKvs", // Plateia
+];
+
 function About() {
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMediaIndex((prev) => (prev + 1) % ABOUT_VIDEOS.length);
+    }, 6000); // Trocando a cada 6 segundos para dar tempo de ver o vídeo
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="sobre" className="py-24 bg-bg-base relative border-t border-line-base">
        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
@@ -182,83 +189,31 @@ function About() {
           
           <div className="relative">
             <div className="aspect-[4/5] rounded-[12px] overflow-hidden theme-card relative group p-0">
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent z-10" />
-              {/* Note: Placeholder image representing an artist or concert */}
-              <div className="w-full h-full bg-gradient-to-br from-neutral-900 to-black relative overflow-hidden group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
-                
-                {/* Grid 3D de fundo */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [transform:perspective(500px)_rotateX(60deg)] origin-bottom opacity-50 z-0"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-metallic-gold/10 via-transparent to-transparent z-0"></div>
-
-                {/* Singles / Capas flutuantes */}
-                <motion.div 
-                  className="absolute z-20 w-24 sm:w-32 h-24 sm:h-32 rounded-lg bg-gradient-to-br from-purple-800/80 to-blue-900/80 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-white/20 flex flex-col items-center justify-center backdrop-blur-md"
-                  animate={{ y: [-10, 10, -10], rotate: [-2, 2, -2] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ top: '15%', left: '15%' }}
-                >
-                  <AudioLines className="w-8 h-8 sm:w-10 sm:h-10 text-white/70 mb-2" />
-                  <div className="w-1/2 h-1 bg-white/20 rounded-full"></div>
-                </motion.div>
-                
-                <motion.div 
-                  className="absolute z-10 w-20 sm:w-28 h-20 sm:h-28 rounded-lg bg-gradient-to-tr from-amber-600/80 to-orange-800/80 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-white/20 flex flex-col items-center justify-center backdrop-blur-md"
-                  animate={{ y: [10, -10, 10], rotate: [5, -5, 5] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  style={{ top: '25%', right: '15%' }}
-                >
-                  <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white/80 mb-2" />
-                  <div className="w-1/2 h-1 bg-white/20 rounded-full"></div>
-                </motion.div>
-
-                <motion.div 
-                  className="absolute z-15 w-24 sm:w-32 h-24 sm:h-32 rounded-lg bg-gradient-to-bl from-zinc-700/80 to-zinc-900/80 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-white/20 flex flex-col items-center justify-center backdrop-blur-md"
-                  animate={{ y: [-15, 15, -15], rotate: [-8, 8, -8] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  style={{ top: '45%', left: '45%' }}
-                >
-                  <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-white/70 mb-2" />
-                  <div className="w-1/2 h-1 bg-white/20 rounded-full"></div>
-                </motion.div>
-
-                {/* Gráfico de crescimento 3D */}
-                <div className="absolute bottom-6 left-0 w-full h-[40%] flex items-end px-8 gap-2 sm:gap-3 z-0 pb-16">
-                  {[30, 45, 40, 60, 50, 80, 65, 95].map((height, i) => (
-                    <motion.div
-                      key={i}
-                      className="flex-1 bg-gradient-to-t from-metallic-gold/80 to-yellow-300/40 rounded-t-sm shadow-[0_0_15px_rgba(255,215,0,0.2)] border-t border-x border-white/10"
-                      initial={{ height: 0 }}
-                      whileInView={{ height: `${height}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
-                    />
-                  ))}
-                </div>
-
-                {/* Linha brilhante simulando tendência */}
-                <svg className="absolute bottom-[20%] left-0 w-full h-[30%] z-10 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
-                  <motion.path
-                    d="M 5,80 Q 25,60 45,70 T 80,30 T 95,10"
-                    fill="none"
-                    stroke="url(#gradient-line)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    className="drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
-                  />
-                  <defs>
-                    <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#ffff" />
-                      <stop offset="100%" stopColor="#d4af37" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-black/20 to-transparent z-10" />
               
+              <div className="w-full h-full relative overflow-hidden group-hover:scale-105 transition-transform duration-700 flex items-center justify-center bg-black">
+                {ABOUT_VIDEOS.map((video, index) => (
+                  <div
+                    key={video}
+                    className="absolute inset-0 w-full h-full transition-opacity duration-[1500ms] pointer-events-none"
+                    style={{
+                      opacity: currentMediaIndex === index ? 1 : 0,
+                      zIndex: currentMediaIndex === index ? 1 : 0,
+                      transform: 'scale(2)', // Escalar para cobrir black bars
+                    }}
+                  >
+                    <iframe
+                      src={`${video.replace('watch?v=', 'embed/')}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${video.split('v=')[1]}`}
+                      className="w-full h-full pointer-events-none"
+                      style={{ objectFit: 'cover' }}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                ))}
+              </div>
+
               {/* Floating Stat Card */}
               <div className="absolute bottom-6 left-6 right-6 z-20 theme-card flex items-center gap-4 backdrop-blur-xl">
                 <div className="w-12 h-12 rounded-full bg-card-base border border-line-base flex items-center justify-center">
@@ -551,22 +506,117 @@ function CTA() {
   );
 }
 
+const PHRASES = ["Mais Alcance", "Mais Fãs", "Mais Streams", "Mais Presença"];
+
+function DynamicShowcase() {
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % PHRASES.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full max-w-4xl mx-auto h-[300px] md:h-[400px] overflow-hidden rounded-[24px] bg-neutral-900 border border-line-base relative flex items-center justify-center p-6 group">
+      {/* Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold-base/10 via-black to-black opacity-80 z-0"></div>
+
+      {/* Animated Mockups Background */}
+
+      {/* Spotify-like Mockup */}
+      <motion.div 
+        animate={{ y: [-10, 10, -10], rotate: [-2, 2, -2] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-2 top-[5%] sm:left-[5%] sm:top-[10%] w-[120px] sm:w-[150px] md:w-[180px] bg-black/60 backdrop-blur-md rounded-2xl p-3 border border-white/10 shadow-2xl z-10"
+      >
+        <div className="w-full aspect-square bg-zinc-800 rounded-lg mb-3 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1619983081563-430f63602796?q=80&w=300&auto=format&fit=crop" className="w-full h-full object-cover" alt="Album" />
+        </div>
+        <div className="h-3 w-3/4 bg-white/20 rounded-full mb-2"></div>
+        <div className="h-2 w-1/2 bg-white/10 rounded-full mb-3"></div>
+        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+          <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="h-full bg-[#1DB954]"
+          ></motion.div>
+        </div>
+      </motion.div>
+
+      {/* Stories Mockup */}
+      <motion.div
+         animate={{ y: [-15, 15, -15], rotate: [3, -3, 3] }}
+         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+         className="absolute right-2 top-[2%] sm:right-[5%] md:right-[30%] md:top-[5%] w-[80px] sm:w-[100px] md:w-[120px] aspect-[9/16] bg-black border border-white/20 rounded-xl overflow-hidden shadow-2xl z-10"
+      >
+        <img src="https://images.unsplash.com/photo-1540039155733-56f1c3ce8cb7?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover opacity-60" alt="Story" />
+        <div className="absolute top-2 left-2 right-2 flex gap-1">
+          <div className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+            <div className="h-full bg-white w-full"></div>
+          </div>
+          <div className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              className="h-full bg-white"
+            ></motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Instagram-like Follower Growth */}
+      <motion.div
+        animate={{ y: [10, -10, 10], rotate: [2, -2, 2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute right-4 bottom-[5%] sm:bottom-[10%] sm:right-[15%] w-[140px] sm:w-[160px] md:w-[200px] bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-white/10 shadow-2xl z-10 flex flex-col items-center"
+      >
+         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px] mb-2 shadow-lg">
+            <div className="w-full h-full bg-black rounded-full flex items-center justify-center overflow-hidden border-2 border-black">
+              <img src="https://images.unsplash.com/photo-1516280440502-5c058ea822cd?q=80&w=100&auto=format&fit=crop" className="w-full h-full object-cover" alt="Profile" />
+            </div>
+         </div>
+         <div className="text-[0.5rem] sm:text-[0.6rem] text-gray-400 uppercase tracking-[1px] mb-1">Followers</div>
+         <motion.div 
+           className="text-xl sm:text-2xl md:text-3xl font-bold metallic-silver-text mb-3 flex items-center gap-1"
+         >
+           100K <TrendingUp className="w-3 h-3 text-green-400" />
+         </motion.div>
+         <div className="flex gap-2 w-full justify-center">
+            <div className="w-full h-8 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 flex items-center justify-center text-[0.6rem] font-bold text-white shadow-md">Follow</div>
+         </div>
+      </motion.div>
+
+      {/* Dynamic Text Overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none drop-shadow-2xl bg-black/20">
+        <h3 className="text-[0.7rem] sm:text-[0.9rem] uppercase tracking-[4px] text-gray-200 mb-2 font-bold opacity-80">Resultados Reais</h3>
+        <div className="h-[60px] md:h-[80px] flex items-center justify-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.h2
+              key={phraseIndex}
+              initial={{ y: 20, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: -20, opacity: 0, scale: 1.1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="text-3xl sm:text-4xl md:text-6xl font-extrabold m-0 metallic-gold-text text-center tracking-[-1px] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
+            >
+              {PHRASES[phraseIndex]}
+            </motion.h2>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer className="bg-bg-base pt-16 pb-10 border-t border-line-base">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-12">
-        {/* Imagem de show/público */}
-        <div className="w-full max-w-4xl mx-auto overflow-hidden rounded-[24px] bg-black border border-line-base relative group">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
-          <img 
-            src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=1200&auto=format&fit=crop" 
-            alt="Público curtindo um show"
-            className="w-full h-[300px] md:h-[400px] object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center">
-             <span className="text-white/90 text-[0.8rem] tracking-[3px] uppercase font-bold">A Energia da Música</span>
-          </div>
-        </div>
+        <DynamicShowcase />
 
         <div className="w-full border-t border-line-base pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -617,7 +667,7 @@ export default function App() {
     <div className="min-h-screen bg-bg-base text-[#EAEAEA]">
       <audio
         ref={audioRef}
-        src="https://audio-ssl.itunes.apple.com/itunes-assets/Music5/v4/0e/b9/ad/0eb9adbd-ccfa-34b3-3543-790249420f9a/mzaf_6268974598502864766.plus.aac.p.m4a"
+        src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/13/1f/f0/131ff0ec-09d2-cc44-043f-698e60713641/mzaf_1497246005369579066.plus.aac.p.m4a"
         loop
       />
       <button
