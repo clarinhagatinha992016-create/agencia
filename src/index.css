@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg-base: #080808;
+  --color-card-base: #121212;
+  --color-line-base: rgba(255, 255, 255, 0.15);
+  --color-gold-base: #D4AF37;
+}
+
+body {
+  @apply bg-bg-base text-[#EAEAEA] antialiased overflow-x-hidden selection:bg-gold-base/30 selection:text-white;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.metallic-gold-text {
+  background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.metallic-silver-text {
+  background: linear-gradient(135deg, #707070, #E0E0E0, #A0A0A0, #FFFFFF, #808080);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.bg-metallic-gold {
+  background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+}
+
+.bg-metallic-silver {
+  background: linear-gradient(135deg, #707070, #E0E0E0, #A0A0A0, #FFFFFF, #808080);
+}
+
+.theme-card {
+  @apply bg-card-base border border-line-base rounded-[12px] p-5 transition-transform duration-300;
+}
+
+.theme-card-premium {
+  @apply border-gold-base shadow-[0_0_15px_rgba(212,175,55,0.1)];
+}
