@@ -786,48 +786,14 @@ function Gateway({ onEnter }: { onEnter: () => void }) {
 }
 
 export default function App() {
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [hasEntered, setHasEntered] = useState(false);
 
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlayingMusic) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlayingMusic(!isPlayingMusic);
-    }
-  };
-
   if (!hasEntered) {
-    return <Gateway onEnter={() => {
-      setHasEntered(true);
-      // Optional: Auto-play music on enter
-      setTimeout(() => {
-        if (audioRef.current && !isPlayingMusic) {
-          audioRef.current.play().then(() => setIsPlayingMusic(true)).catch(() => {});
-        }
-      }, 500);
-    }} />;
+    return <Gateway onEnter={() => setHasEntered(true)} />;
   }
 
   return (
     <div className="min-h-screen bg-bg-base text-[#EAEAEA]">
-      <audio
-        ref={audioRef}
-        src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/13/1f/f0/131ff0ec-09d2-cc44-043f-698e60713641/mzaf_1497246005369579066.plus.aac.p.m4a"
-        loop
-      />
-      <button
-        onClick={toggleMusic}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-metallic-gold rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(212,175,55,0.4)] hover:scale-110 transition-transform duration-300"
-        aria-label="Toggle background music"
-      >
-        {isPlayingMusic ? <Volume2 className="text-black w-6 h-6" /> : <VolumeX className="text-black w-6 h-6" />}
-      </button>
-
       <NavBar />
       <Hero />
       <About />
