@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { 
   AudioLines, 
@@ -15,7 +16,13 @@ import {
   Heart,
   Users,
   MessageSquare,
-  Mail
+  Mail,
+  Quote,
+  Music,
+  Video,
+  Share2,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 // --- Components ---
@@ -25,10 +32,21 @@ function NavBar() {
     <nav className="fixed top-0 inset-x-0 z-50 bg-bg-base/80 backdrop-blur-md border-b border-line-base pt-4 pb-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-metallic-gold flex items-center justify-center">
-            <AudioLines className="w-4 h-4 text-black" />
-          </div>
-          <span className="font-bold text-xl tracking-[-1px] text-white">
+          <motion.div
+            animate={{
+              rotateY: [0, 360],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{ transformStyle: 'preserve-3d' }}
+            className="w-12 h-12 flex items-center justify-center relative perspective-[1000px]"
+          >
+            <img src="/logo.jpg" alt="UP Music Logo" className="w-full h-full object-contain drop-shadow-2xl" />
+          </motion.div>
+          <span className="font-bold text-xl tracking-[-1px] text-white hidden sm:block">
             <span className="metallic-silver-text">UP</span><span className="metallic-gold-text">MUSIC</span>
           </span>
         </div>
@@ -408,32 +426,61 @@ function Differentiators() {
   return (
     <section id="diferenciais" className="py-24 relative bg-bg-base">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-        <div className="order-2 lg:order-1 relative">
-           <div className="relative aspect-[9/16] max-w-[320px] mx-auto rounded-[24px] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-black">
-              <video 
-                src="/depoimento.mp4" 
-                controls 
-                className="w-full h-full object-cover"
-                poster="https://images.unsplash.com/photo-1520182205149-1e5e4e7329b4?q=80&w=800&auto=format&fit=crop"
-              >
-                Seu navegador não suporta a tag de vídeo.
-              </video>
-              
-              <div className="absolute bottom-0 top-[60%] left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none flex flex-col justify-end transition-opacity duration-300">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-metallic-gold flex items-center justify-center shrink-0">
-                    <Star className="w-5 h-5 text-black fill-black" />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm tracking-wide">Case de Sucesso</h4>
-                    <p className="text-gray-300 text-xs">Artista Exclusivo</p>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm leading-relaxed italic border-l-2 border-gold-base pl-3">
-                  "A UP Music Agency foi essencial pra minha carreira. Os resultados superaram todas expectativas!"
-                </p>
-              </div>
-           </div>
+        <div className="order-2 lg:order-1 relative space-y-4">
+          <div className="absolute -inset-4 bg-gradient-to-tr from-metallic-gold/10 to-transparent blur-2xl -z-10 rounded-full" />
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-black/40 border border-white/5 backdrop-blur-sm p-6 rounded-2xl shadow-lg relative flex items-center gap-5"
+          >
+            <div className="w-14 h-14 rounded-full bg-metallic-gold/10 border border-metallic-gold/30 flex items-center justify-center shrink-0">
+              <Play className="w-6 h-6 text-metallic-gold fill-metallic-gold" />
+            </div>
+            <div>
+              <h4 className="text-3xl font-bold text-white tracking-tight mb-1">1.5M+</h4>
+              <p className="text-metallic-silver text-sm leading-snug">
+                Visualizações orgânicas em Reels na semana de estreia do single.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="bg-black/40 border border-white/5 backdrop-blur-sm p-6 rounded-2xl shadow-lg relative flex items-center gap-5 sm:ml-8"
+          >
+            <div className="w-14 h-14 rounded-full bg-metallic-silver/10 border border-metallic-silver/30 flex items-center justify-center shrink-0">
+              <Music className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h4 className="text-3xl font-bold text-white tracking-tight mb-1">12.5K</h4>
+              <p className="text-metallic-silver text-sm leading-snug">
+                Pré-saves convertidos no Spotify, garantindo entrada no radar.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="bg-black/40 border border-white/5 backdrop-blur-sm p-6 rounded-2xl shadow-lg relative flex items-center gap-5"
+          >
+            <div className="w-14 h-14 rounded-full bg-black border border-white/10 flex items-center justify-center shrink-0">
+              <Share2 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h4 className="text-3xl font-bold text-white tracking-tight mb-1">8.2K</h4>
+              <p className="text-metallic-silver text-sm leading-snug">
+                Vídeos criados com o áudio oficial no TikTok e republicações diárias.
+              </p>
+            </div>
+          </motion.div>
         </div>
 
         <div className="order-1 lg:order-2">
@@ -508,19 +555,17 @@ function Footer() {
   return (
     <footer className="bg-bg-base pt-16 pb-10 border-t border-line-base">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-12">
-        
-        {/* Placeholder para o vídeo enviado */}
-        <div className="w-full max-w-lg mx-auto overflow-hidden rounded-xl bg-black border border-white/5 shadow-2xl relative">
-          <video
-            src="/video.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity"
-          >
-            Seu navegador não suporta a tag de vídeo.
-          </video>
+        {/* Imagem de show/público */}
+        <div className="w-full max-w-4xl mx-auto overflow-hidden rounded-[24px] bg-black border border-line-base relative group">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=1200&auto=format&fit=crop" 
+            alt="Público curtindo um show"
+            className="w-full h-[300px] md:h-[400px] object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center">
+             <span className="text-white/90 text-[0.8rem] tracking-[3px] uppercase font-bold">A Energia da Música</span>
+          </div>
         </div>
 
         <div className="w-full border-t border-line-base pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -554,8 +599,35 @@ function Footer() {
 }
 
 export default function App() {
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isPlayingMusic) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlayingMusic(!isPlayingMusic);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-bg-base text-[#EAEAEA]">
+      <audio
+        ref={audioRef}
+        src="https://audio-ssl.itunes.apple.com/itunes-assets/Music5/v4/0e/b9/ad/0eb9adbd-ccfa-34b3-3543-790249420f9a/mzaf_6268974598502864766.plus.aac.p.m4a"
+        loop
+      />
+      <button
+        onClick={toggleMusic}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-metallic-gold rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(212,175,55,0.4)] hover:scale-110 transition-transform duration-300"
+        aria-label="Toggle background music"
+      >
+        {isPlayingMusic ? <Volume2 className="text-black w-6 h-6" /> : <VolumeX className="text-black w-6 h-6" />}
+      </button>
+
       <NavBar />
       <Hero />
       <About />
