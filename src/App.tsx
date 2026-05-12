@@ -715,9 +715,80 @@ function Footer() {
   );
 }
 
+const WhatsappIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" className={className}>
+    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157.1zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
+);
+
+function Gateway({ onEnter }: { onEnter: () => void }) {
+  return (
+    <div className="min-h-screen bg-bg-base flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute top-[20%] left-[20%] w-[40vw] h-[40vw] bg-metallic-gold/10 rounded-full blur-[100px] mix-blend-screen" />
+        <div className="absolute bottom-[20%] right-[20%] w-[30vw] h-[30vw] bg-metallic-silver/10 rounded-full blur-[80px] mix-blend-screen" />
+      </div>
+      
+      <div className="z-10 w-full max-w-sm flex flex-col items-center gap-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex flex-col items-center gap-4"
+        >
+          <div className="w-24 h-24 rounded-full bg-metallic-silver flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
+            <div className="absolute inset-0 rounded-full border border-metallic-silver opacity-50 animate-ping" style={{ animationDuration: '3s' }} />
+            <AudioLines className="w-10 h-10 text-black" />
+          </div>
+          <h1 className="font-bold text-4xl tracking-[-1px] text-white text-center mt-2 flex items-center gap-1">
+            <span className="metallic-silver-text">UP</span><span className="metallic-gold-text">MUSIC</span>
+          </h1>
+          <p className="text-gray-400 text-[0.75rem] uppercase tracking-[3px] text-center max-w-[250px]">
+            Agência focada em lançamentos musicais
+          </p>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          className="w-full flex flex-col gap-4"
+        >
+          <button 
+            onClick={onEnter}
+            className="w-full py-5 px-6 rounded-2xl bg-gradient-to-r from-metallic-silver to-white text-black font-bold uppercase tracking-[1px] text-[0.8rem] hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center justify-center gap-3 relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity" />
+            <Globe className="w-5 h-5" />
+            <span className="flex-1 text-center pr-3">Acessar o Site</span>
+          </button>
+          
+          <a
+            href="https://wa.me/5537991614113?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20UP%20Music%20Agency."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-5 px-6 rounded-2xl bg-[#25D366] text-white font-bold uppercase tracking-[1px] text-[0.8rem] hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] flex items-center justify-center gap-3 relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
+            <WhatsappIcon className="w-5 h-5" />
+            <span className="flex-1 text-center pr-3">Falar no WhatsApp</span>
+          </a>
+
+          <div className="pt-4 flex items-center justify-center gap-6">
+            <a href="https://instagram.com/upm.agency" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+              <Instagram className="w-5 h-5" />
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [hasEntered, setHasEntered] = useState(false);
 
   const toggleMusic = () => {
     if (audioRef.current) {
@@ -729,6 +800,18 @@ export default function App() {
       setIsPlayingMusic(!isPlayingMusic);
     }
   };
+
+  if (!hasEntered) {
+    return <Gateway onEnter={() => {
+      setHasEntered(true);
+      // Optional: Auto-play music on enter
+      setTimeout(() => {
+        if (audioRef.current && !isPlayingMusic) {
+          audioRef.current.play().then(() => setIsPlayingMusic(true)).catch(() => {});
+        }
+      }, 500);
+    }} />;
+  }
 
   return (
     <div className="min-h-screen bg-bg-base text-[#EAEAEA]">
