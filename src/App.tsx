@@ -8,6 +8,7 @@ import {
   Radio, 
   Globe, 
   Star, 
+  Disc,
   CheckCircle,
   Gem,
   Instagram,
@@ -142,10 +143,10 @@ function Hero() {
   );
 }
 
-const ABOUT_VIDEOS = [
-  "https://www.youtube.com/watch?v=FpkX2VdXZJs", // Show
-  "https://www.youtube.com/watch?v=Z8fZWcOXmgs", // Estúdio / Gravando
-  "https://www.youtube.com/watch?v=7uPzZjxHKvs", // Plateia
+const ABOUT_IMAGES = [
+  "https://images.unsplash.com/photo-1540039155733-56f1c3ce8cb7?q=80&w=1200&auto=format&fit=crop", // Show / Artist Silhouette
+  "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop", // Studio
+  "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1200&auto=format&fit=crop", // Crowd / Energy
 ];
 
 function About() {
@@ -153,8 +154,8 @@ function About() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMediaIndex((prev) => (prev + 1) % ABOUT_VIDEOS.length);
-    }, 6000); // Trocando a cada 6 segundos para dar tempo de ver o vídeo
+      setCurrentMediaIndex((prev) => (prev + 1) % ABOUT_IMAGES.length);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -191,27 +192,93 @@ function About() {
             <div className="aspect-[4/5] rounded-[12px] overflow-hidden theme-card relative group p-0">
               <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-black/20 to-transparent z-10" />
               
-              <div className="w-full h-full relative overflow-hidden group-hover:scale-105 transition-transform duration-700 flex items-center justify-center bg-black">
-                {ABOUT_VIDEOS.map((video, index) => (
-                  <div
-                    key={video}
-                    className="absolute inset-0 w-full h-full transition-opacity duration-[1500ms] pointer-events-none"
-                    style={{
-                      opacity: currentMediaIndex === index ? 1 : 0,
-                      zIndex: currentMediaIndex === index ? 1 : 0,
-                      transform: 'scale(2)', // Escalar para cobrir black bars
-                    }}
-                  >
-                    <iframe
-                      src={`${video.replace('watch?v=', 'embed/')}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${video.split('v=')[1]}`}
-                      className="w-full h-full pointer-events-none"
-                      style={{ objectFit: 'cover' }}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                ))}
+              <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-black">
+                <AnimatePresence mode="popLayout">
+                  <motion.img
+                    key={currentMediaIndex}
+                    src={ABOUT_IMAGES[currentMediaIndex]}
+                    alt="Música e Arte"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
+                  />
+                </AnimatePresence>
+              </div>
+
+              {/* Global Network Overlay (Lines & Dots) */}
+              <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden opacity-60 mix-blend-screen">
+                <svg className="w-full h-full" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+                  <motion.path 
+                    d="M 50 150 Q 150 100 250 200 T 350 350" 
+                    fill="transparent" 
+                    stroke="url(#gradientLine)" 
+                    strokeWidth="1.5"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 0.8 }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
+                  />
+                  <motion.path 
+                    d="M 80 350 Q 180 450 320 200" 
+                    fill="transparent" 
+                    stroke="url(#gradientLine2)" 
+                    strokeWidth="1.5"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 0.6 }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse", delay: 1 }}
+                  />
+                  <motion.path 
+                    d="M 350 100 Q 250 50 150 300" 
+                    fill="transparent" 
+                    stroke="url(#gradientLine)" 
+                    strokeWidth="1"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 0.5 }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", repeatType: "reverse", delay: 2 }}
+                  />
+                  
+                  {/* Nodes representing countries/cities */}
+                  {[
+                    { cx: 50, cy: 150, delay: 0 },
+                    { cx: 250, cy: 200, delay: 0.5 },
+                    { cx: 350, cy: 350, delay: 1 },
+                    { cx: 80, cy: 350, delay: 1.5 },
+                    { cx: 320, cy: 200, delay: 2 },
+                    { cx: 350, cy: 100, delay: 2.5 },
+                    { cx: 150, cy: 300, delay: 3 },
+                  ].map((node, i) => (
+                    <g key={i}>
+                      {/* Pulse effect */}
+                      <motion.circle 
+                        cx={node.cx} cy={node.cy} r="6" 
+                        fill="rgba(255,255,255,0.2)"
+                        initial={{ scale: 1, opacity: 0.8 }}
+                        animate={{ scale: 3, opacity: 0 }}
+                        transition={{ duration: 2, repeat: Infinity, delay: node.delay }}
+                      />
+                      {/* Core dot */}
+                      <circle 
+                        cx={node.cx} cy={node.cy} r="3" 
+                        fill="#ffffff" 
+                        className="drop-shadow-[0_0_6px_rgba(255,255,255,1)]"
+                      />
+                    </g>
+                  ))}
+
+                  <defs>
+                    <linearGradient id="gradientLine" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+                      <stop offset="50%" stopColor="#ffffff" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="gradientLine2" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+                      <stop offset="50%" stopColor="#eab308" stopOpacity="0.9" />
+                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
               </div>
 
               {/* Floating Stat Card */}
